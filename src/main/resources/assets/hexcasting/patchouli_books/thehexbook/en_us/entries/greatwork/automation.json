@@ -1,0 +1,22 @@
+{
+    "name": "hexbubbles.entry.title.automation",
+    "category": "hexcasting:greatwork",
+    "icon": "minecraft:redstone_ore",
+    "advancement": "hexcasting:enlightenment",
+    "entry_color": "54398a",
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "hexcasting:pattern",
+            "op_id": "hexbubbles:write_slate",
+            "anchor": "hexbubbles:write_slate",
+            "input": "pattern, vec",
+            "output": "",
+            "text": "hexbubbles.page.automation.1"
+        },
+        {
+            "type":"patchouli:text",
+            "text":"hexbubbles.page.automation.2"
+        }
+    ]
+}

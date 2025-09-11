@@ -1,0 +1,9 @@
+{
+    "hexcasting.action.hexbubbles:write_slate":"Carver's Gambit",
+    "hexcasting.mishap.bad_block.pattern_writable_block":"slate or pattern-writable block",
+
+    "hexbubbles.entry.title.automation":"Automation with Spellcircles",
+    "hexbubbles.page.title": "Carver's Gambit",
+    "hexbubbles.page.automation.1": "Accepts the pattern to be written to the slate and its location. Costs no media",
+    "hexbubbles.page.automation.2": "I have grown tired of writing patterns to individual slates as I place them like a bricklayer applying mortar.$(br2)This pattern will allow to write patterns to slates after I have placed them.$(br2)Combined with the right spell, this will allow me to rapidly copy a list of patterns to a circle."
+}

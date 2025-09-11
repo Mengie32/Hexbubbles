@@ -1,6 +1,7 @@
 package net.mengie32.hexbubbles;
 
 import net.fabricmc.api.ModInitializer;
+import net.mengie32.hexbubbles.patterns.Patterns;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ public class Hexbubbles implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		LOGGER.info("Hello Fabric world!");
+		LOGGER.info("Hello Fabric world from Hexbubbles!");
+		Patterns.registerPatterns();
 	}
 }
