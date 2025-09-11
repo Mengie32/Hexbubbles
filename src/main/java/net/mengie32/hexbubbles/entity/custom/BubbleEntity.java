@@ -1,45 +1,29 @@
 package net.mengie32.hexbubbles.entity.custom;
 
+import java.util.List;
+
+import at.petrak.hexcasting.api.mod.HexTags.Items;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WanderAroundGoal;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Arm;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-public class BubbleEntity extends AnimalEntity{
+public class BubbleEntity extends LivingEntity{
+
+    public BubbleEntity(EntityType<? extends LivingEntity> entityType, World world) {
+        super(entityType, world);
+        //TODO Auto-generated constructor stub
+    }
 
     //Animation States:
     private int rippleAnimationCooldown = 0;
     public final AnimationState rippleAnimationState = new AnimationState();
     public final AnimationState idleAnimationState = new AnimationState();
 
-    public BubbleEntity(EntityType<? extends AnimalEntity> entityType, World world) {
-        super(entityType, world);
-        //TODO Auto-generated constructor stub
-    }
-
-    @Override
-    protected void initGoals() {
-        this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new WanderAroundGoal(this, 1.0));
-    }
-
-    public static DefaultAttributeContainer.Builder createBubbleAttributes(){
-        return MobEntity.createMobAttributes()
-            .add(EntityAttributes.GENERIC_MAX_HEALTH,2.0)
-            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED,0.2);
-        }
-    @Override
-    public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createChild'");
-    }
 
     @Override
     public void tick() {
@@ -60,4 +44,25 @@ public class BubbleEntity extends AnimalEntity{
         this.idleAnimationState.startIfNotRunning(this.age);
     }
 
+    @Override
+    public void equipStack(EquipmentSlot slot, ItemStack stack) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'equipStack'");
+    }
+
+    @Override
+    public Iterable<ItemStack> getArmorItems() {
+        return DefaultedList.ofSize(1,ItemStack.EMPTY);
+    }
+
+    @Override
+    public ItemStack getEquippedStack(EquipmentSlot slot) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public Arm getMainArm() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMainArm'");
+    }
 }

@@ -26,6 +26,6 @@ public class Hexbubbles implements ModInitializer {
 		LOGGER.info("Hello Fabric world from Hexbubbles!");
 		Patterns.registerPatterns();
 		ModEntities.registerModEntities();
-		FabricDefaultAttributeRegistry.register(ModEntities.BUBBLE, BubbleEntity.createBubbleAttributes());
+		FabricDefaultAttributeRegistry.register(ModEntities.BUBBLE, BubbleEntity.createLivingAttributes());
 	}
 }

@@ -7,7 +7,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
-import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 
-public class BubbleRenderer extends MobEntityRenderer<BubbleEntity, BubbleModel<BubbleEntity>>{
+public class BubbleRenderer extends LivingEntityRenderer<BubbleEntity, BubbleModel<BubbleEntity>>{
     private static final Identifier TEXTURE = new Identifier(Hexbubbles.MOD_ID,"textures/entity/bubble.png");
 
 

@@ -2,6 +2,8 @@
     "hexcasting.action.hexbubbles:write_slate":"Carver's Gambit",
     "hexcasting.mishap.bad_block.pattern_writable_block":"slate or pattern-writable block",
 
+    "entity.hexbubbles.bubble":"Hexbubble",
+
     "hexbubbles.entry.title.automation":"Automation with Spellcircles",
     "hexbubbles.page.title": "Carver's Gambit",
     "hexbubbles.page.automation.1": "Accepts the pattern to be written to the slate and its location. Costs no media",
