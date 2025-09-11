@@ -1,8 +1,5 @@
 package net.mengie32.hexbubbles.entity.custom;
 
-import java.util.List;
-
-import at.petrak.hexcasting.api.mod.HexTags.Items;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;

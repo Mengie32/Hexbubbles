@@ -16,6 +16,7 @@ public class Patterns {
         Hexbubbles.LOGGER.info("Registering Patterns!");
 
         register("write_slate", "deeeeewaqa", HexDir.EAST, new WriteSlate());
+        register("bubble_spawn_empty", "qqqqqddqd", HexDir.WEST, new BubbleSpawnEmpty());
     }
 
     private static void register(
