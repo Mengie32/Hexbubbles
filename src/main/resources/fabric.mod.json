@@ -20,6 +20,9 @@
 		],
 		"fabric-datagen": [
 			"net.mengie32.hexbubbles.HexbubblesDataGenerator"
+		],
+		"client":[
+			"net.mengie32.hexbubbles.HexbubblesClient"
 		]
 	},
 	"mixins": [
