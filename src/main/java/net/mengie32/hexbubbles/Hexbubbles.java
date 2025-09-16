@@ -1,13 +1,11 @@
 package net.mengie32.hexbubbles;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.mengie32.hexbubbles.entity.ModEntities;
-import net.mengie32.hexbubbles.entity.custom.BubbleEntity;
-import net.mengie32.hexbubbles.patterns.Patterns;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.fabricmc.api.ModInitializer;
+import net.mengie32.hexbubbles.entity.ModEntities;
+import net.mengie32.hexbubbles.patterns.Patterns;
 
 public class Hexbubbles implements ModInitializer {
 	public static final String MOD_ID = "hexbubbles";
@@ -26,6 +24,5 @@ public class Hexbubbles implements ModInitializer {
 		LOGGER.info("Hello Fabric world from Hexbubbles!");
 		Patterns.registerPatterns();
 		ModEntities.registerModEntities();
-		FabricDefaultAttributeRegistry.register(ModEntities.BUBBLE, BubbleEntity.createLivingAttributes());
 	}
 }

@@ -1,5 +1,6 @@
 package net.mengie32.hexbubbles.entity;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.mengie32.hexbubbles.Hexbubbles;
 import net.mengie32.hexbubbles.entity.custom.BubbleEntity;
 import net.minecraft.entity.EntityType;
@@ -13,10 +14,11 @@ public class ModEntities {
         Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier(Hexbubbles.MOD_ID,"bubble"),
-            EntityType.Builder.create(BubbleEntity::new, SpawnGroup.MISC).build("bubble")
+            EntityType.Builder.create(BubbleEntity::new, SpawnGroup.MISC).setDimensions(0.95f, 0.95f).build("bubble")
         );
 
     public static void registerModEntities() {
         Hexbubbles.LOGGER.info("Registering entities for " + Hexbubbles.MOD_ID);
+        FabricDefaultAttributeRegistry.register(ModEntities.BUBBLE, BubbleEntity.createBubbleAttributes());
     }
 }
