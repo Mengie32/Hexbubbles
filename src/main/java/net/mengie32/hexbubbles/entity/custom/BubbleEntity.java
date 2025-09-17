@@ -6,6 +6,7 @@ import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -30,7 +31,7 @@ import net.minecraft.world.event.GameEvent;
 
 public class BubbleEntity extends LivingEntity implements VehicleInventory {
     DefaultedList<ItemStack> inventory;
-    private static final int INVENTORY_SIZE = 9;    // Also need to change ScreenHandler
+    private static final int INVENTORY_SIZE = 9; // Also need to change ScreenHandler
     private Identifier lootTableId;
     private long lootTableSeed;
 
@@ -83,6 +84,12 @@ public class BubbleEntity extends LivingEntity implements VehicleInventory {
             this.updateAnimations();
         }
     }
+
+    // Disable Entity Collisions
+    @Override
+    public boolean isPushable() {
+      return false;
+   }
 
     private void updateAnimations() {
         this.idleAnimationState.startIfNotRunning(this.age);

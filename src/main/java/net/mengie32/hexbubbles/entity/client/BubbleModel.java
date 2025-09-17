@@ -27,6 +27,7 @@ public class BubbleModel<T extends BubbleEntity> extends SinglePartEntityModel<T
 		ModelData modelData = new ModelData();
 		ModelPartData modelPartData = modelData.getRoot();
 		
+		@SuppressWarnings("unused")
 		ModelPartData Bubble = modelPartData.addChild(
 			"Bubble", 
 			ModelPartBuilder.create()

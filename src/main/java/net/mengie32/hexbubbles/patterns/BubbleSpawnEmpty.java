@@ -13,11 +13,8 @@ import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import net.mengie32.hexbubbles.entity.ModEntities;
 import net.mengie32.hexbubbles.entity.custom.BubbleEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 
 public final class BubbleSpawnEmpty implements ConstMediaAction{
    private static final int argc = 1;
