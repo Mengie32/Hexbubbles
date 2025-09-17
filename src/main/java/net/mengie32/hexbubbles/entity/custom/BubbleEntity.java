@@ -93,7 +93,8 @@ public class BubbleEntity extends LivingEntity implements VehicleInventory {
    }
 
     private void updateAnimations() {
-        this.idleAnimationState.startIfNotRunning(this.age + Random.create().nextBetween(0,20));
+        // Randomises bubble animation start to prevent synced animations on rejoin
+        this.idleAnimationState.startIfNotRunning(this.age + Random.create().nextBetween(0,30));
     }
 
     @Override
