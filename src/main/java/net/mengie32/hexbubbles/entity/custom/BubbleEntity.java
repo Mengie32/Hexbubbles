@@ -16,7 +16,7 @@ import net.minecraft.entity.vehicle.VehicleInventory;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.Generic3x3ContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
@@ -30,7 +30,7 @@ import net.minecraft.world.event.GameEvent;
 
 public class BubbleEntity extends LivingEntity implements VehicleInventory {
     DefaultedList<ItemStack> inventory;
-    private static final int INVENTORY_SIZE = 27;
+    private static final int INVENTORY_SIZE = 9;    // Also need to change ScreenHandler
     private Identifier lootTableId;
     private long lootTableSeed;
 
@@ -110,7 +110,7 @@ public class BubbleEntity extends LivingEntity implements VehicleInventory {
         throw new UnsupportedOperationException("Unimplemented method 'getMainArm'");
     }
 
-    // Inventory functions (copied from chest boat)
+    // Inventory functions (copied & modified from chest boat)
 
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
@@ -187,7 +187,7 @@ public class BubbleEntity extends LivingEntity implements VehicleInventory {
             return null;
         } else {
             this.generateLoot(playerInventory.player);
-            return GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, this);
+            return new Generic3x3ContainerScreenHandler(i, playerInventory, this);
         }
     }
 
