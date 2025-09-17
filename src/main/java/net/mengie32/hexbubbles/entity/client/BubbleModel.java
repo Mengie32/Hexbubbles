@@ -31,10 +31,10 @@ public class BubbleModel<T extends BubbleEntity> extends SinglePartEntityModel<T
 			"Bubble", 
 			ModelPartBuilder.create()
 				.uv(0, 0)
-				.cuboid(-6.0F, -6.0F, -6.0F,
+				.cuboid(-6.0F, -3.0F, -6.0F,
 					12.0F, 12.0F, 12.0F, 
 					new Dilation(0.0F)), 
-			ModelTransform.pivot(0.0F, 16.0F, 0.0F)
+			ModelTransform.pivot(0.0F, 14.5F, 0.0F)
 		);
 		
 		return TexturedModelData.of(modelData, 64, 64);
