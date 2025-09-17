@@ -3,23 +3,25 @@ package net.mengie32.hexbubbles.entity.client;
 import net.mengie32.hexbubbles.Hexbubbles;
 import net.mengie32.hexbubbles.entity.custom.BubbleEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 
-public class BubbleEntityRenderer extends LivingEntityRenderer<BubbleEntity, BubbleModel<BubbleEntity>>{
-    private static final Identifier TEXTURE = new Identifier(Hexbubbles.MOD_ID,"textures/entity/bubble.png");
+public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> extends EntityRenderer<BubbleEntity> {
+    private static final Identifier TEXTURE = new Identifier(Hexbubbles.MOD_ID, "textures/entity/bubble.png");
+    protected M model;
 
     public BubbleEntityRenderer(Context context) {
-        super(context, new BubbleModel<BubbleEntity>(context.getPart(ModModelLayers.BUBBLE)),0.3f);
+        super(context);
+        this.model = getModel(context);
     }
 
     @Override
@@ -28,91 +30,44 @@ public class BubbleEntityRenderer extends LivingEntityRenderer<BubbleEntity, Bub
     }
 
     @Override
-    public void render(BubbleEntity livingEntity, float f, float g, MatrixStack matrixStack,
-            VertexConsumerProvider vertexConsumerProvider, int i) {
+    public void render(BubbleEntity entity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light) {
 
         matrixStack.push();
-		this.model.handSwingProgress = this.getHandSwingProgress(livingEntity, g);
-		this.model.riding = livingEntity.hasVehicle();
-		this.model.child = livingEntity.isBaby();
-		float h = MathHelper.lerpAngleDegrees(g, livingEntity.prevBodyYaw, livingEntity.bodyYaw);
-		float j = MathHelper.lerpAngleDegrees(g, livingEntity.prevHeadYaw, livingEntity.headYaw);
-		float k = j - h;
-		if (livingEntity.hasVehicle() && livingEntity.getVehicle() instanceof LivingEntity) {
-			LivingEntity livingEntity2 = (LivingEntity)livingEntity.getVehicle();
-			h = MathHelper.lerpAngleDegrees(g, livingEntity2.prevBodyYaw, livingEntity2.bodyYaw);
-			k = j - h;
-			float l = MathHelper.wrapDegrees(k);
-			if (l < -85.0F) {
-				l = -85.0F;
-			}
+        matrixStack.translate(0.0f, -0.5f, 0.0f);   // I suspect this is needed because the blockbench model was constructed entirely above y=0
 
-			if (l >= 85.0F) {
-				l = 85.0F;
-			}
+        float animationProgress = getAnimationProgress(entity, tickDelta);
+        model.setAngles(entity, animationProgress, yaw, 0f);
 
-			h = j - l;
-			if (l * l > 2500.0F) {
-				h += l * 0.2F;
-			}
-
-			k = j - h;
-		}
-
-		float m = MathHelper.lerp(g, livingEntity.prevPitch, livingEntity.getPitch());
-		if (shouldFlipUpsideDown(livingEntity)) {
-			m *= -1.0F;
-			k *= -1.0F;
-		}
-
-		if (livingEntity.isInPose(EntityPose.SLEEPING)) {
-			Direction direction = livingEntity.getSleepingDirection();
-			if (direction != null) {
-				float n = livingEntity.getEyeHeight(EntityPose.STANDING) - 0.1F;
-				matrixStack.translate(-direction.getOffsetX() * n, 0.0F, -direction.getOffsetZ() * n);
-			}
-		}
-
-		float lx = this.getAnimationProgress(livingEntity, g);
-		this.setupTransforms(livingEntity, matrixStack, lx, h, g);
-		matrixStack.scale(-1.0F, -1.0F, 1.0F);
-		this.scale(livingEntity, matrixStack, g);
-		matrixStack.translate(0.0F, -1.501F, 0.0F);
-		float n = 0.0F;
-		float o = 0.0F;
-		if (!livingEntity.hasVehicle() && livingEntity.isAlive()) {
-			n = livingEntity.limbAnimator.getSpeed(g);
-			o = livingEntity.limbAnimator.getPos(g);
-			if (livingEntity.isBaby()) {
-				o *= 3.0F;
-			}
-
-			if (n > 1.0F) {
-				n = 1.0F;
-			}
-		}
-
-		this.model.animateModel(livingEntity, o, n, g);
-		this.model.setAngles(livingEntity, o, n, lx, k, m);
-		MinecraftClient minecraftClient = MinecraftClient.getInstance();
-		boolean bl = this.isVisible(livingEntity);
-		boolean bl2 = !bl && !livingEntity.isInvisibleTo(minecraftClient.player);
-		boolean bl3 = minecraftClient.hasOutline(livingEntity);
-		RenderLayer renderLayer = this.getRenderLayer(livingEntity, bl, bl2, bl3);
-		if (renderLayer != null) {
-			VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucent(this.getTexture(livingEntity)));
-			int p = getOverlay(livingEntity, this.getAnimationCounter(livingEntity, g));
-			this.model.render(matrixStack, vertexConsumer, i, p, 1.0F, 1.0F, 1.0F, bl2 ? 0.15F : 1.0F);
-		}
-        /*
-
-		if (!livingEntity.isSpectator()) {
-			for (FeatureRenderer<T, M> featureRenderer : this.features) {
-				featureRenderer.render(matrixStack, vertexConsumerProvider, i, livingEntity, o, n, g, lx, k, m);
-			}
-		}
-            */
-
-		matrixStack.pop();
+        MinecraftClient minecraftClient = MinecraftClient.getInstance();
+        boolean bl = !entity.isInvisible();
+        boolean bl2 = !bl && !entity.isInvisibleTo(minecraftClient.player);
+        boolean bl3 = minecraftClient.hasOutline(entity);
+        RenderLayer renderLayer = this.getRenderLayer(entity, bl, bl2, bl3);
+        if (renderLayer != null) {
+            VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucent(this.getTexture(entity)));
+            this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1f, 1f, 1f, 1f);
+        }
+        matrixStack.pop();
     }
+
+    protected RenderLayer getRenderLayer(BubbleEntity entity, boolean showBody, boolean translucent,boolean showOutline) {
+        Identifier identifier = this.getTexture(entity);
+        if (translucent) {
+            return RenderLayer.getItemEntityTranslucentCull(identifier);
+        } else if (showBody) {
+            return this.model.getLayer(identifier);
+        } else {
+            return showOutline ? RenderLayer.getOutline(identifier) : null;
+        }
+    }
+
+    protected M getModel(EntityRendererFactory.Context ctx) {
+        EntityModelLayer entityModelLayer = ModModelLayers.BUBBLE;
+        ModelPart modelPart = ctx.getPart(entityModelLayer);
+        return (M)(new BubbleEntityModel<>(modelPart));
+    }
+
+    protected float getAnimationProgress(BubbleEntity entity, float tickDelta) {
+      return (float)entity.age + tickDelta;
+   }
 }

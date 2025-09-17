@@ -19,6 +19,6 @@ public class ModEntities {
 
     public static void registerModEntities() {
         Hexbubbles.LOGGER.info("Registering entities for " + Hexbubbles.MOD_ID);
-        FabricDefaultAttributeRegistry.register(ModEntities.BUBBLE, BubbleEntity.createBubbleAttributes());
+        // FabricDefaultAttributeRegistry.register(ModEntities.BUBBLE, BubbleEntity.createBubbleAttributes());  // No longer has default attributes when converted to non-living
     }
 }

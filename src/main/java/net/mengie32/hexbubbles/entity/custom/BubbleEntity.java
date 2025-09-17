@@ -3,8 +3,8 @@ package net.mengie32.hexbubbles.entity.custom;
 import org.joml.Math;
 
 import net.minecraft.entity.AnimationState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -19,7 +19,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.Generic3x3ContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
@@ -29,16 +28,15 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
-public class BubbleEntity extends LivingEntity implements VehicleInventory {
+public class BubbleEntity extends Entity implements VehicleInventory {
     DefaultedList<ItemStack> inventory;
     private static final int INVENTORY_SIZE = 9; // Also need to change ScreenHandler
     private Identifier lootTableId;
     private long lootTableSeed;
 
-    public BubbleEntity(EntityType<? extends LivingEntity> entityType, World world) {
+    public BubbleEntity(EntityType<? extends Entity> entityType, World world) {
         super(entityType, world);
         this.setNoGravity(true);
-        this.setNoDrag(true);
         this.setBoundingBox(this.calculateBoundingBox());
         this.inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
         
@@ -97,37 +95,14 @@ public class BubbleEntity extends LivingEntity implements VehicleInventory {
         this.idleAnimationState.startIfNotRunning(this.age + Random.create().nextBetween(0,30));
     }
 
-    @Override
-    public void equipStack(EquipmentSlot slot, ItemStack stack) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'equipStack'");
-    }
-
-    @Override
-    public Iterable<ItemStack> getArmorItems() {
-        return DefaultedList.ofSize(1, ItemStack.EMPTY);
-    }
-
-    @Override
-    public ItemStack getEquippedStack(EquipmentSlot slot) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public Arm getMainArm() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMainArm'");
-    }
-
     // Inventory functions (copied & modified from chest boat)
 
+
     public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
         this.writeInventoryToNbt(nbt);
     }
 
     public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
         this.readInventoryFromNbt(nbt);
     }
 
@@ -229,5 +204,10 @@ public class BubbleEntity extends LivingEntity implements VehicleInventory {
     }
 
     public void onClose(PlayerEntity player) {
+    }
+
+    @Override
+    protected void initDataTracker() {
+        // no tracked data for now
     }
 }
