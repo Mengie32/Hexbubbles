@@ -15,12 +15,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 
-public class BubbleRenderer extends LivingEntityRenderer<BubbleEntity, BubbleModel<BubbleEntity>>{
+public class BubbleEntityRenderer extends LivingEntityRenderer<BubbleEntity, BubbleModel<BubbleEntity>>{
     private static final Identifier TEXTURE = new Identifier(Hexbubbles.MOD_ID,"textures/entity/bubble.png");
 
-
-    public BubbleRenderer(Context context) {
-        super(context, new BubbleModel<>(context.getPart(ModModelLayers.BUBBLE)),0.3f);
+    public BubbleEntityRenderer(Context context) {
+        super(context, new BubbleModel<BubbleEntity>(context.getPart(ModModelLayers.BUBBLE)),0.3f);
     }
 
     @Override
