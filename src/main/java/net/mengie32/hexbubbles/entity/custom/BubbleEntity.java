@@ -6,7 +6,6 @@ import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -26,6 +25,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
@@ -41,6 +41,10 @@ public class BubbleEntity extends LivingEntity implements VehicleInventory {
         this.setNoDrag(true);
         this.setBoundingBox(this.calculateBoundingBox());
         this.inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
+        
+        if (this.getWorld().isClient()) {
+            this.updateAnimations();
+        }
     }
 
     public static DefaultAttributeContainer.Builder createBubbleAttributes() {
@@ -80,9 +84,6 @@ public class BubbleEntity extends LivingEntity implements VehicleInventory {
         // Disable fall damage (there may be a better way to do this?)
         this.fallDistance = 0;
 
-        if (this.getWorld().isClient()) {
-            this.updateAnimations();
-        }
     }
 
     // Disable Entity Collisions
@@ -92,7 +93,7 @@ public class BubbleEntity extends LivingEntity implements VehicleInventory {
    }
 
     private void updateAnimations() {
-        this.idleAnimationState.startIfNotRunning(this.age);
+        this.idleAnimationState.startIfNotRunning(this.age + Random.create().nextBetween(0,20));
     }
 
     @Override
