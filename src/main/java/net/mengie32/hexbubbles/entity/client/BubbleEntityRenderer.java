@@ -1,27 +1,39 @@
 package net.mengie32.hexbubbles.entity.client;
 
+import java.util.function.Function;
+
 import net.mengie32.hexbubbles.Hexbubbles;
 import net.mengie32.hexbubbles.entity.custom.BubbleEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
+import net.minecraft.util.collection.DefaultedList;
 
 public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> extends EntityRenderer<BubbleEntity> {
     private static final Identifier TEXTURE = new Identifier(Hexbubbles.MOD_ID, "textures/entity/bubble.png");
     protected M model;
+    private final ItemRenderer itemRenderer;
 
     public BubbleEntityRenderer(Context context) {
         super(context);
         this.model = getModel(context);
+        this.itemRenderer = context.getItemRenderer();
     }
 
     @Override
@@ -31,7 +43,7 @@ public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> ext
 
     @Override
     public void render(BubbleEntity entity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light) {
-
+        super.render(entity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
         matrixStack.push();
         matrixStack.translate(0.0f, -0.5f, 0.0f);   // I suspect this is needed because the blockbench model was constructed entirely above y=0
 
@@ -40,27 +52,24 @@ public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> ext
         float animationProgress = getAnimationProgress(entity, tickDelta);
         model.setAngles(entity, animationProgress, yaw, 0f);
 
-        MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        boolean bl = !entity.isInvisible();
-        boolean bl2 = !bl && !entity.isInvisibleTo(minecraftClient.player);
-        boolean bl3 = minecraftClient.hasOutline(entity);
-        RenderLayer renderLayer = this.getRenderLayer(entity, bl, bl2, bl3);
+        RenderLayer renderLayer = BubbleEntityRenderLayer.getBubbleRenderLayer(this.getTexture(entity));
         if (renderLayer != null) {
-            VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucent(this.getTexture(entity)));
+            VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
             this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1f, 1f, 1f, 1f);
         }
         matrixStack.pop();
+        renderInventory(entity, matrixStack, vertexConsumerProvider, light);
     }
 
-    protected RenderLayer getRenderLayer(BubbleEntity entity, boolean showBody, boolean translucent,boolean showOutline) {
-        Identifier identifier = this.getTexture(entity);
-        if (translucent) {
-            return RenderLayer.getItemEntityTranslucentCull(identifier);
-        } else if (showBody) {
-            return this.model.getLayer(identifier);
-        } else {
-            return showOutline ? RenderLayer.getOutline(identifier) : null;
+    private void renderInventory(BubbleEntity entity, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light) {
+        DefaultedList<ItemStack> inventory = entity.getInventoryLive();
+        matrixStack.push();
+        matrixStack.scale(0.3f, 0.3f, 0.3f);
+        matrixStack.translate(0.0f, 2f, 0.0f);
+        for (ItemStack itemStack : inventory) {
+            itemRenderer.renderItem(itemStack,ModelTransformationMode.FIXED,light,OverlayTexture.DEFAULT_UV,matrixStack,vertexConsumerProvider,entity.getWorld(),entity.getId());
         }
+        matrixStack.pop();
     }
 
     protected M getModel(EntityRendererFactory.Context ctx) {
@@ -72,4 +81,5 @@ public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> ext
     protected float getAnimationProgress(BubbleEntity entity, float tickDelta) {
       return (float)entity.age + tickDelta;
    }
+
 }

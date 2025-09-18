@@ -2,18 +2,20 @@ package net.mengie32.hexbubbles.entity.custom;
 
 import org.joml.Math;
 
+import net.mengie32.hexbubbles.Hexbubbles;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.vehicle.VehicleInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -24,17 +26,18 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
 public class BubbleEntity extends Entity implements VehicleInventory {
-    DefaultedList<ItemStack> inventory;
+    private static final TrackedData<NbtCompound> INVENTORY = DataTracker.registerData(BubbleEntity.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
     private static final int INVENTORY_SIZE = 9; // Also need to change ScreenHandler
+    private DefaultedList<ItemStack> inventory;
     private Identifier lootTableId;
     private long lootTableSeed;
+    private boolean firstServerTick = true;
 
     public BubbleEntity(EntityType<? extends Entity> entityType, World world) {
         super(entityType, world);
@@ -61,9 +64,24 @@ public class BubbleEntity extends Entity implements VehicleInventory {
     public void tick() {
         super.tick();
 
+        if(firstServerTick && !this.getWorld().isClient()){
+            firstServerTick = false;
+            updateInvetoryDataTracker();
+        }
+
+        // if(this.getWorld().isClient()){
+        //     Hexbubbles.LOGGER.info("Inventory Data Tracker (Client): " + this.dataTracker.get(INVENTORY).asString());
+        //     Hexbubbles.LOGGER.info("Inventory (Client): " + this.getInventory().toString());
+        // }else{
+        //     Hexbubbles.LOGGER.info("Inventory Data Tracker (Server): " + this.dataTracker.get(INVENTORY).asString());
+        //     Hexbubbles.LOGGER.info("Inventory (Server): " + this.getInventory().toString());
+        // }
+
         updateLookDirection();
         
         updateVelocity();
+
+
 
         this.move(MovementType.SELF, this.getVelocity());
     }
@@ -165,6 +183,7 @@ public class BubbleEntity extends Entity implements VehicleInventory {
 
     public void setStack(int slot, ItemStack stack) {
         this.setInventoryStack(slot, stack);
+        updateInvetoryDataTracker();
     }
 
     public StackReference getStackReference(int mappedIndex) {
@@ -208,11 +227,12 @@ public class BubbleEntity extends Entity implements VehicleInventory {
     }
 
     public DefaultedList<ItemStack> getInventory() {
-        return this.inventory;
+        return inventory;
     }
 
     public void resetInventory() {
         this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
+        updateInvetoryDataTracker();
     }
 
     public void onClose(PlayerEntity player) {
@@ -220,6 +240,30 @@ public class BubbleEntity extends Entity implements VehicleInventory {
 
     @Override
     protected void initDataTracker() {
-        // no tracked data for now
+        this.getDataTracker().startTracking(INVENTORY, new NbtCompound());
+    }
+
+
+    // Data tracker access functions:
+    // seperate functions to minimise packets being sent
+    // the inventory variable should always take precedence over the data tracker
+    // because there are too many methods that directly modify it
+    private void updateInvetoryDataTracker(){
+        if(!this.getWorld().isClient()){    // only server should be updating the data tracker
+            NbtCompound nbt = Inventories.writeNbt(new NbtCompound(), inventory);
+            Hexbubbles.LOGGER.info("Bubble is sending a data packet: " + nbt.toString());
+            this.getDataTracker().set(INVENTORY,nbt);
+        }
+    }
+
+    public DefaultedList<ItemStack> getInventoryLive(){
+        if(this.getWorld().isClient()){     // only client should bother reading the data tracker
+            DefaultedList<ItemStack> liveInvetory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
+            Inventories.readNbt(this.dataTracker.get(INVENTORY), liveInvetory);
+            return liveInvetory;
+        }else{
+            return inventory;
+        }
+        
     }
 }
