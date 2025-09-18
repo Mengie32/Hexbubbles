@@ -24,6 +24,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -60,23 +61,9 @@ public class BubbleEntity extends Entity implements VehicleInventory {
     public void tick() {
         super.tick();
 
-        // Set bubbles to 'look' in the direction they're moving for compatability with blink
-        Vec3d VelDir = this.getVelocity().normalize();
-        Vec3d horzVelDir = new Vec3d(VelDir.x, 0, VelDir.z);
-        Vec3d south = new Vec3d(0d, 0d, 1d);
-        boolean stopped = (horzVelDir == Vec3d.ZERO);
-
-        Float yaw = stopped ? 0f : (float) Math.toDegrees(Math.acos(horzVelDir.dotProduct(south)));
-        yaw = yaw.isNaN() ? 0f : yaw;
-        yaw = horzVelDir.x > 0 ? 360 - yaw : yaw;
-
-        Float pitch = stopped ? 0f : (float) Math.toDegrees(Math.acos(VelDir.dotProduct(horzVelDir)));
-        pitch = pitch.isNaN() ? 0f : pitch;
-        pitch = VelDir.z > 0 ? -pitch : pitch;
-
-        this.setYaw(yaw);
-        this.setPitch(pitch);
-        this.setRotation(this.getYaw(), this.getPitch());
+        updateLookDirection();
+        
+        updateVelocity();
 
         this.move(MovementType.SELF, this.getVelocity());
     }
@@ -86,6 +73,33 @@ public class BubbleEntity extends Entity implements VehicleInventory {
         this.idleAnimationState.startIfNotRunning(this.age - Random.create().nextBetween(0,30));
     }
 
+    private void updateVelocity(){
+        Vec3d velocity = this.getVelocity();
+        double speed = velocity.length(); 
+        double dragMultiplier = speed > 0.25 ? 0.98 : 1;    // Slow down bubble only if speed is above 5 blocks/s
+        this.setVelocity(velocity.multiply(dragMultiplier));
+    }
+
+    private void updateLookDirection(){
+        // Set bubbles to 'look' in the direction they're moving for compatability with blink
+        Vec3d velDir = this.getVelocity().normalize();
+        Vec3d horzVelDir = new Vec3d(velDir.x, 0, velDir.z);
+        Vec3d south = new Vec3d(0d, 0d, 1d);
+        boolean stopped = (horzVelDir == Vec3d.ZERO);
+
+        Float yaw = stopped ? 0f : (float) Math.toDegrees(Math.acos(horzVelDir.dotProduct(south)));
+        yaw = yaw.isNaN() ? 0f : yaw;
+        yaw = horzVelDir.x > 0 ? 360 - yaw : yaw;
+
+        Float pitch = stopped ? 0f : (float) Math.toDegrees(Math.acos(velDir.dotProduct(horzVelDir)));
+        pitch = pitch.isNaN() ? 0f : pitch;
+        pitch = velDir.y > 0 ? -pitch : pitch;
+
+        this.setYaw(yaw);
+        this.setPitch(pitch);
+        this.setRotation(this.getYaw(), this.getPitch());
+    }
+
     public boolean damage(DamageSource source, float amount) {
         if (!this.getWorld().isClient && !this.isRemoved()) {
             this.discard();
@@ -93,7 +107,7 @@ public class BubbleEntity extends Entity implements VehicleInventory {
         }else{
             return true;
         }
-    }    
+    }
 
     // Inventory functions (copied & modified from chest boat)
     public void writeCustomDataToNbt(NbtCompound nbt) {
