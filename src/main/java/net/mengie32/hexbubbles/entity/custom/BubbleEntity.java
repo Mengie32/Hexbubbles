@@ -40,10 +40,16 @@ public class BubbleEntity extends Entity implements VehicleInventory {
         this.setNoGravity(true);
         this.setBoundingBox(this.calculateBoundingBox());
         this.inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
+        this.intersectionChecked = true;
         
         if (this.getWorld().isClient()) {
             this.updateAnimations();
         }
+    }
+
+    @Override
+    public boolean canHit(){
+        return !this.isRemoved();
     }
 
     // Animation States:
@@ -80,6 +86,14 @@ public class BubbleEntity extends Entity implements VehicleInventory {
         this.idleAnimationState.startIfNotRunning(this.age - Random.create().nextBetween(0,30));
     }
 
+    public boolean damage(DamageSource source, float amount) {
+        if (!this.getWorld().isClient && !this.isRemoved()) {
+            this.discard();
+            return true;
+        }else{
+            return true;
+        }
+    }    
 
     // Inventory functions (copied & modified from chest boat)
     public void writeCustomDataToNbt(NbtCompound nbt) {
