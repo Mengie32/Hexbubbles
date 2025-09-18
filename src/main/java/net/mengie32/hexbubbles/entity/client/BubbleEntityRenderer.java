@@ -62,6 +62,10 @@ public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> ext
             this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1f, 1f, 1f, 1f);
         }
         matrixStack.pop();
+        /* Known Bugs:
+         * Transluscent block and item models don't render through the bubble
+         * Backface of bubble renders in front of item model (can be fixed by enabling culling in the render layer, but I don't like how this looks) 
+         */
         renderInventory(entity, matrixStack, vertexConsumerProvider, light);
     }
 
