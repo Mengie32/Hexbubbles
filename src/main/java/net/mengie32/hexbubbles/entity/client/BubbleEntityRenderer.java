@@ -35,6 +35,8 @@ public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> ext
         matrixStack.push();
         matrixStack.translate(0.0f, -0.5f, 0.0f);   // I suspect this is needed because the blockbench model was constructed entirely above y=0
 
+        // With the custom renderer, I am no longer restriceted to animations baked into the model
+        // TODO: Improve animations
         float animationProgress = getAnimationProgress(entity, tickDelta);
         model.setAngles(entity, animationProgress, yaw, 0f);
 

@@ -6,6 +6,7 @@ import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -45,14 +46,6 @@ public class BubbleEntity extends Entity implements VehicleInventory {
         }
     }
 
-    public static DefaultAttributeContainer.Builder createBubbleAttributes() {
-        return DefaultAttributeContainer.builder()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 1f)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1f)
-                .add(EntityAttributes.GENERIC_ARMOR, 0f)
-                .add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 0f);
-    }
-
     // Animation States:
     public final AnimationState rippleAnimationState = new AnimationState();
     public final AnimationState idleAnimationState = new AnimationState();
@@ -61,7 +54,7 @@ public class BubbleEntity extends Entity implements VehicleInventory {
     public void tick() {
         super.tick();
 
-        // Set bubbles to look in the direction they're moving for compatability with blink
+        // Set bubbles to 'look' in the direction they're moving for compatability with blink
         Vec3d VelDir = this.getVelocity().normalize();
         Vec3d horzVelDir = new Vec3d(VelDir.x, 0, VelDir.z);
         Vec3d south = new Vec3d(0d, 0d, 1d);
@@ -79,25 +72,16 @@ public class BubbleEntity extends Entity implements VehicleInventory {
         this.setPitch(pitch);
         this.setRotation(this.getYaw(), this.getPitch());
 
-        // Disable fall damage (there may be a better way to do this?)
-        this.fallDistance = 0;
-
+        this.move(MovementType.SELF, this.getVelocity());
     }
-
-    // Disable Entity Collisions
-    @Override
-    public boolean isPushable() {
-      return false;
-   }
 
     private void updateAnimations() {
         // Randomises bubble animation start to prevent synced animations on rejoin
-        this.idleAnimationState.startIfNotRunning(this.age + Random.create().nextBetween(0,30));
+        this.idleAnimationState.startIfNotRunning(this.age - Random.create().nextBetween(0,30));
     }
 
+
     // Inventory functions (copied & modified from chest boat)
-
-
     public void writeCustomDataToNbt(NbtCompound nbt) {
         this.writeInventoryToNbt(nbt);
     }
