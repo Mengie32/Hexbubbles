@@ -26,6 +26,7 @@ public class BubbleEntityRenderLayer extends RenderLayer{
 			.texture(new RenderPhase.Texture(texture, false, false))
 			.transparency(TRANSLUCENT_TRANSPARENCY)
 			.target(ITEM_ENTITY_TARGET)
+			.cull(DISABLE_CULLING)
 			.build(true);
 			return of(
 				"bubble_transluscent", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, true, true, multiPhaseParameters
