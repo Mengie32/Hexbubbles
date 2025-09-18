@@ -21,17 +21,14 @@ public class BubbleEntityRenderLayer extends RenderLayer{
     private static final Function<Identifier, RenderLayer> BUBBLE_TRANSLUSCENT = Util.memoize(
 		(Function<Identifier, RenderLayer>)(texture -> {
 			RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
-				.program(ENTITY_TRANSLUCENT_PROGRAM)
-				.texture(new RenderPhase.Texture(texture, false, false))
-				.transparency(TRANSLUCENT_TRANSPARENCY)
-				.target(MAIN_TARGET)
-				.lightmap(ENABLE_LIGHTMAP)
-				.overlay(ENABLE_OVERLAY_COLOR)
-				.writeMaskState(RenderPhase.COLOR_MASK)
-                .depthTest(ALWAYS_DEPTH_TEST)
-				.build(true);
+			.lightmap(ENABLE_LIGHTMAP)
+			.program(ENTITY_TRANSLUCENT_PROGRAM)
+			.texture(new RenderPhase.Texture(texture, false, false))
+			.transparency(TRANSLUCENT_TRANSPARENCY)
+			.target(ITEM_ENTITY_TARGET)
+			.build(true);
 			return of(
-				"bubble_transluscent", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, true, multiPhaseParameters
+				"bubble_transluscent", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, true, true, multiPhaseParameters
 			);
 		})
 	);

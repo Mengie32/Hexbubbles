@@ -1,29 +1,32 @@
 package net.mengie32.hexbubbles.entity.client;
 
-import java.util.function.Function;
+import com.mojang.blaze3d.systems.RenderCallStorage;
 
 import net.mengie32.hexbubbles.Hexbubbles;
 import net.mengie32.hexbubbles.entity.custom.BubbleEntity;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.block.Block;
+import net.minecraft.block.StainedGlassPaneBlock;
+import net.minecraft.block.TransparentBlock;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderPhase;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.MatrixUtil;
 
 public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> extends EntityRenderer<BubbleEntity> {
     private static final Identifier TEXTURE = new Identifier(Hexbubbles.MOD_ID, "textures/entity/bubble.png");
@@ -52,6 +55,7 @@ public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> ext
         float animationProgress = getAnimationProgress(entity, tickDelta);
         model.setAngles(entity, animationProgress, yaw, 0f);
 
+        // RenderLayer renderLayer = RenderLayer.getTranslucentMovingBlock();
         RenderLayer renderLayer = BubbleEntityRenderLayer.getBubbleRenderLayer(this.getTexture(entity));
         if (renderLayer != null) {
             VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
