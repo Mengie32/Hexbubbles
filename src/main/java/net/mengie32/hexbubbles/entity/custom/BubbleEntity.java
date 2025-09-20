@@ -251,7 +251,7 @@ public class BubbleEntity extends Entity implements VehicleInventory {
     private void updateInvetoryDataTracker(){
         if(!this.getWorld().isClient()){    // only server should be updating the data tracker
             NbtCompound nbt = Inventories.writeNbt(new NbtCompound(), inventory);
-            Hexbubbles.LOGGER.info("Bubble is sending a data packet: " + nbt.toString());
+            // Hexbubbles.LOGGER.info("Bubble is sending a data packet: " + nbt.toString());
             this.getDataTracker().set(INVENTORY,nbt);
         }
     }
