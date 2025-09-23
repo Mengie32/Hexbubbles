@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.fabricmc.api.ModInitializer;
+import net.mengie32.hexbubbles.blocks.HexbubbleBlocks;
 import net.mengie32.hexbubbles.entity.ModEntities;
 import net.mengie32.hexbubbles.patterns.Patterns;
 
