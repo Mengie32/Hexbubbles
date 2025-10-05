@@ -1,6 +1,6 @@
 package net.mengie32.hexbubbles;
 
-import net.mengie32.hexbubbles.entity.ModEntities;
+import net.mengie32.hexbubbles.entity.HexbubblesEntities;
 import net.mengie32.hexbubbles.entity.client.BubbleEntityModel;
 import net.mengie32.hexbubbles.entity.client.BubbleEntityRenderer;
 import net.mengie32.hexbubbles.entity.client.ModModelLayers;
@@ -12,7 +12,7 @@ public class HexbubblesClient implements ClientModInitializer{
 
     @Override
     public void onInitializeClient() {
-        EntityRendererRegistry.register(ModEntities.BUBBLE, BubbleEntityRenderer::new);
+        EntityRendererRegistry.register(HexbubblesEntities.BUBBLE, BubbleEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModModelLayers.BUBBLE, BubbleEntityModel::getTexturedModelData);
     }
 

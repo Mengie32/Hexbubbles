@@ -11,7 +11,7 @@ import at.petrak.hexcasting.api.casting.eval.OperationResult;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingImage;
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation;
 import at.petrak.hexcasting.api.casting.iota.Iota;
-import net.mengie32.hexbubbles.entity.ModEntities;
+import net.mengie32.hexbubbles.entity.HexbubblesEntities;
 import net.mengie32.hexbubbles.entity.custom.BubbleEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -28,7 +28,7 @@ public final class BubbleSpawnEmpty implements ConstMediaAction{
       // Ambit & in-world Check:
       MishapWrapper.assertVecInRange(env, vec);
 
-      BubbleEntity bubble = new BubbleEntity(ModEntities.BUBBLE, world);
+      BubbleEntity bubble = new BubbleEntity(HexbubblesEntities.BUBBLE, world);
       bubble.setPosition(vec);
       world.spawnEntity(bubble);
       return List.of();

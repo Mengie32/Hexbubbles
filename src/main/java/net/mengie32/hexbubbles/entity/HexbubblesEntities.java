@@ -1,6 +1,5 @@
 package net.mengie32.hexbubbles.entity;
 
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.mengie32.hexbubbles.Hexbubbles;
 import net.mengie32.hexbubbles.entity.custom.BubbleEntity;
 import net.minecraft.entity.EntityType;
@@ -9,7 +8,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
-public class ModEntities {
+public class HexbubblesEntities {
     public static final EntityType<BubbleEntity> BUBBLE = 
         Registry.register(
             Registries.ENTITY_TYPE,

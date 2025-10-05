@@ -2,7 +2,6 @@ package net.mengie32.hexbubbles.entity.custom;
 
 import org.joml.Math;
 
-import net.mengie32.hexbubbles.Hexbubbles;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

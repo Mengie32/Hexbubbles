@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.fabricmc.api.ModInitializer;
-import net.mengie32.hexbubbles.entity.ModEntities;
+import net.mengie32.hexbubbles.blocks.HexbubblesBlockEntities;
+import net.mengie32.hexbubbles.blocks.HexbubblesBlocks;
+import net.mengie32.hexbubbles.entity.HexbubblesEntities;
 import net.mengie32.hexbubbles.patterns.Patterns;
 
 public class Hexbubbles implements ModInitializer {
@@ -23,6 +25,8 @@ public class Hexbubbles implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world from Hexbubbles!");
 		Patterns.registerPatterns();
-		ModEntities.registerModEntities();
+		HexbubblesEntities.registerModEntities();
+		HexbubblesBlocks.registerHexbubbleBlocks();
+		HexbubblesBlockEntities.registerHexbubbleBlockEtities();
 	}
 }
