@@ -10,7 +10,8 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class Patterns {
-    // Thank you to my lord and saviour Luxof for implementing hexes in a way I can comprehend
+    // Thank you to my lord and saviour Luxof for implementing patterns in a way I can comprehend
+    // (https://github.com/Real-Luxof/Lesser-Teleport/blob/main/src/main/java/com/luxof/lessertp/init/Patterns.java)
 
     public static void registerPatterns() {
         Hexbubbles.LOGGER.info("Registering Patterns!");
