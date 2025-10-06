@@ -13,7 +13,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class HexbubblesBlocks {
-    public static final BlockScanningImpetus IMPETUS_SCANNING = registerBlock("impetus/scanning", new BlockScanningImpetus(FabricBlockSettings.copy(HexBlocks.IMPETUS_EMPTY)));
+    public static final BlockScanningImpetus IMPETUS_SCANNING = registerBlock("impetus/scanning", new BlockScanningImpetus(FabricBlockSettings.copy(HexBlocks.IMPETUS_RIGHTCLICK)));
 
     private static <T extends Block> T registerBlock(String name, T block){
         registerBlockItem(name,block);

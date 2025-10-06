@@ -1,0 +1,55 @@
+{
+  "variants": {
+    "energized=false,facing=down": { 
+        "model": "hexbubbles:block/impetus/dim_scanning",
+        "x":90
+    },
+    "energized=false,facing=east": { 
+        "model": "hexbubbles:block/impetus/dim_scanning",
+        "y":90
+    },
+    "energized=false,facing=north": { 
+        "model": "hexbubbles:block/impetus/dim_scanning" ,
+        "y":0
+    },
+    "energized=false,facing=south": { 
+        "model": "hexbubbles:block/impetus/dim_scanning" ,
+        "y":180
+    },
+    "energized=false,facing=up": { 
+        "model": "hexbubbles:block/impetus/dim_scanning",
+        "x":270
+    },
+    "energized=false,facing=west": { 
+        "model": "hexbubbles:block/impetus/dim_scanning" ,
+        "y":270
+    },
+
+
+
+    "energized=true,facing=down": { 
+        "model": "hexbubbles:block/impetus/lit_scanning",
+        "x":90
+    },
+    "energized=true,facing=east": { 
+        "model": "hexbubbles:block/impetus/lit_scanning",
+        "y":90
+    },
+    "energized=true,facing=north": { 
+        "model": "hexbubbles:block/impetus/lit_scanning" ,
+        "y":0
+    },
+    "energized=true,facing=south": { 
+        "model": "hexbubbles:block/impetus/lit_scanning" ,
+        "y":180
+    },
+    "energized=true,facing=up": { 
+        "model": "hexbubbles:block/impetus/lit_scanning",
+        "x":270
+    },
+    "energized=true,facing=west": { 
+        "model": "hexbubbles:block/impetus/lit_scanning" ,
+        "y":270
+    }
+  }
+}
