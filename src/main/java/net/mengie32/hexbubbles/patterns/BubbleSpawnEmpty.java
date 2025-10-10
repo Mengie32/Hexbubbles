@@ -10,6 +10,7 @@ import at.petrak.hexcasting.api.casting.eval.CastingEnvironment;
 import at.petrak.hexcasting.api.casting.eval.OperationResult;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingImage;
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation;
+import at.petrak.hexcasting.api.casting.iota.EntityIota;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import net.mengie32.hexbubbles.entity.HexbubblesEntities;
 import net.mengie32.hexbubbles.entity.custom.BubbleEntity;
@@ -31,7 +32,7 @@ public final class BubbleSpawnEmpty implements ConstMediaAction{
       BubbleEntity bubble = new BubbleEntity(HexbubblesEntities.BUBBLE, world);
       bubble.setPosition(vec);
       world.spawnEntity(bubble);
-      return List.of();
+      return List.of(new EntityIota(bubble));
 
    }
 
