@@ -1,7 +1,12 @@
 package net.mengie32.hexbubbles.blocks.circles.impeti;
 
+import org.jetbrains.annotations.Nullable;
+
 import at.petrak.hexcasting.api.block.circle.BlockAbstractImpetus;
+import at.petrak.hexcasting.common.blocks.circles.impetuses.BlockEntityLookingImpetus;
+import at.petrak.hexcasting.common.lib.HexBlockEntities;
 import net.mengie32.hexbubbles.Hexbubbles;
+import net.mengie32.hexbubbles.blocks.HexbubblesBlockEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -27,12 +32,25 @@ public class BlockScanningImpetus extends BlockAbstractImpetus{
         return new BlockEntityScanningImpetus(pos, state);
     }
 
+    // {@link BlockLookingImpetus}
+    // uegh <- same
+    @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        // Make sure to check world.isClient if you only want to tick only on serverside.
-        
-        return world.isClient() ? null : BlockEntityScanningImpetus::tick;
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World pLevel, BlockState pState, BlockEntityType<T> type) {
+        if (!pLevel.isClient) {
+            return createTickerHelper(type, HexbubblesBlockEntities.IMPETUS_SCANNING, BlockEntityScanningImpetus::tick);
+        } else {
+            return null;
+        }
     }
+        
+    @Nullable
+    @SuppressWarnings("unchecked")
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> 
+    createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> targetType, BlockEntityTicker<? super E> ticker) {
+        return targetType == type ? (BlockEntityTicker<A>) ticker : null;
+    }
+
 
     // Temporarily copying right click impetus functoinality for testing
     @Override

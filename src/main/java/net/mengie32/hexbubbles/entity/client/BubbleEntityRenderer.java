@@ -104,7 +104,7 @@ public class BubbleEntityRenderer<M extends BubbleEntityModel<BubbleEntity>> ext
             matrixStack.translate(pos.x,pos.y,pos.z);
 
             spinSpeed = (((float)((posIndex^entity.getId())) % 10f) - 5f)/40f; // using bitwise XOR as a getto hash function
-            Hexbubbles.LOGGER.info(String.valueOf(posIndex) + " : " + String.valueOf(spinSpeed));
+            // Hexbubbles.LOGGER.info(String.valueOf(posIndex) + " : " + String.valueOf(spinSpeed));
             matrixStack.multiply(RotationAxis.POSITIVE_Y.rotation(animationProgress*spinSpeed));
 
             itemRenderer.renderItem(itemStack,ModelTransformationMode.FIXED,light,OverlayTexture.DEFAULT_UV,matrixStack,vertexConsumerProvider,entity.getWorld(),entity.getId());
