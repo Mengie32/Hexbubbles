@@ -36,7 +36,7 @@ public final class BubbleSpawnEmpty implements ConstMediaAction{
    }
 
    public long getMediaCost() {
-      return DefaultImpls.getMediaCost(this);
+      return 20000L;
    }
 
    @NotNull
